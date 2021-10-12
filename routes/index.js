@@ -6,4 +6,4 @@ const router = express.Router();
 router.get('/status', AppController.getStatus);
 router.get('/stats', AppController.getStats);
 
-exports.router = router;
+module.exports = router;

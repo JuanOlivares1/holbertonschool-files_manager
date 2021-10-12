@@ -1,7 +1,7 @@
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
-class AppController {
+class appController {
   constructor() {
     this.getStatus = (req, res) => {
       res.status(200);
@@ -14,5 +14,5 @@ class AppController {
     };
   }
 }
-
-exports.AppController = new AppController();
+const AppController = new appController();
+module.exports = AppController;
