@@ -4,10 +4,8 @@ import redisClient from '../utils/redis';
 class AppController {
   constructor() {
     this.getStatus = (req, res) => {
-      if (dbClient.isAlive() && redisClient.isAlive()) {
-        res.status(200);
-        res.json({ redis: true, db: true });
-      }
+      res.status(200);
+      res.json({ redis: redisClient.isAlive(), db: dbClient.isAlive()});
     };
 
     this.getStats = (req, res) => {
