@@ -17,8 +17,8 @@ class UsersController {
     if (field.length > 0) {
       return res.status(400).json({ error: 'Already exist' });
     }
-    await dbCollection.insertOne({ email: _email, password: hashedPw });
-    return res.status(201).json({ email: _email, password: hashedPw });
+    const newUser = await dbCollection.insertOne({ email: _email, password: hashedPw });
+    return res.status(201).json({ email: _email, id: newUser.insertedId });
   }
 }
 
