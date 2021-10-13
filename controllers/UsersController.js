@@ -1,3 +1,4 @@
+import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
 const crypto = require('crypto');
@@ -19,6 +20,21 @@ class UsersController {
     }
     const newUser = await dbCollection.insertOne({ email: _email, password: hashedPw });
     return res.status(201).json({ email: _email, id: newUser.insertedId });
+  }
+
+  static async getMe(req, res) {
+    const _token = req.header('X-Token');
+    const dbCollection = dbClient.db.collection('users');
+    const redisResp = await redisClient.get(_token);
+    if (!redisResp) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const field = await dbCollection.find({ _id: redisResp }).toArray();
+    if (field.length > 0) {
+      res.status(200).json({ id: redisResp, email: field[0].email });
+    }
+    console.log('last line ...');
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 }
 
