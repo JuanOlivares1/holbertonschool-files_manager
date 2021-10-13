@@ -9,7 +9,7 @@ class AppController {
 
   static getStats(req, res) {
     res.status(200);
-      res.json({ users: dbClient.nbUsers, files: dbClient.nbFiles });
+    res.json({ users: dbClient.nbUsers, files: dbClient.nbFiles });
   };
 }
 
