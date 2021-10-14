@@ -7,11 +7,14 @@ const crypto = require('crypto');
 class AuthController {
   static async getConnect(req, res) {
     const authHeader = req.header('Authorization');
-
-    if (!authHeader || authHeader.length === 0) {
+    if (!authHeader || authHeader.length <= 6) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+
     const data = authHeader.slice(6);
+    if (typeof data === 'string' || data.length === 0) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
 
     const buff = Buffer.from(data, 'base64');
     const auth = buff.toString('ascii');
