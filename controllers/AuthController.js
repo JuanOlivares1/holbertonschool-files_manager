@@ -33,7 +33,8 @@ class AuthController {
     if (field.length > 0) {
       let _token = 'auth_';
       _token += uuidv4();
-      await redisClient.set(_token, field[0]._id.toString(), 86400);
+      const save = await redisClient.set(_token, field[0]._id.toString(), 86400);
+      if (save) res.status(401).json({ error: 'Unauthorized' });
       return res.status(200).json({ token: _token });
     }
     return res.status(401).json({ error: 'Unauthorized' });
