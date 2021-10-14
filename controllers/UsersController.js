@@ -27,7 +27,7 @@ class UsersController {
     let _token = 'auth_';
     _token += req.header('X-Token');
 
-    if (!_token || _token.length === 0) {
+    if (!_token || _token.length <= 5) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 

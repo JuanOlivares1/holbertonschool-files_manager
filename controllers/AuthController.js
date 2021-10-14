@@ -12,17 +12,17 @@ class AuthController {
     }
 
     const data = authHeader.slice(6);
-    if (typeof data === 'string' || data.length === 0) {
+    if (typeof data !== 'string' || data.length === 0) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const buff = Buffer.from(data, 'base64');
     const auth = buff.toString('ascii');
     const _auth = auth.split(':');
-
     if (_auth.length !== 2) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+
     const _email = _auth[0];
     const password = _auth[1];
     const hashedPw = crypto.createHash('sha1').update(password, 'utf-8').digest('hex');
@@ -43,7 +43,7 @@ class AuthController {
     let _token = 'auth_';
     _token += req.header('X-Token');
 
-    if (!_token || _token.length === 0) {
+    if (!_token || _token.length <= 5) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
