@@ -22,8 +22,6 @@ class AuthController {
     if (field.length > 0) {
       let _token = 'auth_';
       _token += uuidv4();
-      console.log('token: ', _token);
-      console.log('user_id: ', field[0]._id.toString());
       await redisClient.set(_token, field[0]._id.toString(), 86400);
       return res.status(200).json({ token: _token });
     }
