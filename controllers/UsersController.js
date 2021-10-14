@@ -1,6 +1,6 @@
+import { ObjectId } from 'mongodb';
 import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
-import { ObjectId } from 'mongodb';
 
 const crypto = require('crypto');
 
