@@ -7,11 +7,19 @@ const crypto = require('crypto');
 class AuthController {
   static async getConnect(req, res) {
     const authHeader = req.header('Authorization');
+
+    if (!authHeader || authHeader.length === 0) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
     const data = authHeader.slice(6);
 
     const buff = Buffer.from(data, 'base64');
     const auth = buff.toString('ascii');
     const _auth = auth.split(':');
+
+    if (_auth.length !== 2) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
     const _email = _auth[0];
     const password = _auth[1];
     const hashedPw = crypto.createHash('sha1').update(password, 'utf-8').digest('hex');
@@ -31,6 +39,10 @@ class AuthController {
   static async getDisconnect(req, res) {
     let _token = 'auth_';
     _token += req.header('X-Token');
+
+    if (!_token || _token.length === 0) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
 
     const redisResp = await redisClient.get(_token);
     if (!redisResp) {

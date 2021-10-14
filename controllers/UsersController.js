@@ -26,6 +26,11 @@ class UsersController {
   static async getMe(req, res) {
     let _token = 'auth_';
     _token += req.header('X-Token');
+
+    if (!_token || _token.length === 0) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const dbCollection = dbClient.db.collection('users');
     const redisResp = await redisClient.get(_token);
     if (!redisResp) {
